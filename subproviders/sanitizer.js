@@ -17,11 +17,13 @@ function SanitizerSubprovider(opts){
 }
 
 SanitizerSubprovider.prototype.handleRequest = function(payload, next, end){
-  var txParams = payload.params[0]
+  if (payload.params) {
+    var txParams = payload.params[0]
 
-  if (typeof txParams === 'object' && !Array.isArray(txParams)) {
-    var sanitized = cloneTxParams(txParams)
-    payload.params[0] = sanitized
+    if (typeof txParams === 'object' && !Array.isArray(txParams)) {
+      var sanitized = cloneTxParams(txParams)
+      payload.params[0] = sanitized
+    }
   }
 
   next()
